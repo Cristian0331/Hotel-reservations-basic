@@ -1,0 +1,83 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="roomForm" class="room-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre de la Habitación</mat-label>
+            <input matInput formControlName="name" placeholder="Ej: Suite Presidencial">
+            <mat-error *ngIf="roomForm.get('name')?.hasError('required')">
+                El nombre es requerido
+            </mat-error>
+            <mat-error *ngIf="roomForm.get('name')?.hasError('minlength')">
+                Mínimo 3 caracteres
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tipo de Habitación</mat-label>
+            <mat-select formControlName="type">
+                <mat-option *ngFor="let type of roomTypes" [value]="type">
+                    {{ type }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="roomForm.get('type')?.hasError('required')">
+                El tipo es requerido
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="description" placeholder="Describe las características de la habitación"
+                rows="3"></textarea>
+            <mat-error *ngIf="roomForm.get('description')?.hasError('required')">
+                La descripción es requerida
+            </mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Precio por Noche</mat-label>
+                <input matInput type="number" formControlName="price" placeholder="0.00">
+                <span matPrefix>$&nbsp;</span>
+                <mat-error *ngIf="roomForm.get('price')?.hasError('required')">
+                    El precio es requerido
+                </mat-error>
+                <mat-error *ngIf="roomForm.get('price')?.hasError('min')">
+                    El precio debe ser mayor a 0
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Capacidad (personas)</mat-label>
+                <input matInput type="number" formControlName="capacity" placeholder="1">
+                <mat-error *ngIf="roomForm.get('capacity')?.hasError('required')">
+                    La capacidad es requerida
+                </mat-error>
+                <mat-error *ngIf="roomForm.get('capacity')?.hasError('min')">
+                    Mínimo 1 persona
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>URL de la Imagen</mat-label>
+            <input matInput formControlName="image_url" placeholder="https://ejemplo.com/imagen.jpg">
+            <mat-hint>Opcional - Puedes dejar en blanco para usar imagen por defecto</mat-hint>
+        </mat-form-field>
+
+        <div class="checkbox-container">
+            <mat-checkbox formControlName="is_available">
+                Habitación disponible para reservas
+            </mat-checkbox>
+        </div>
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!roomForm.valid" class="submit-button">
+        {{ submitButtonText }}
+    </button>
+</mat-dialog-actions>

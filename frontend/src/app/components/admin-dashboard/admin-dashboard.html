@@ -1,41 +1,146 @@
 <div class="admin-container">
-    <h1>Panel de Administración</h1>
-    <mat-tab-group>
+    <div class="admin-header">
+        <h1>Panel de Administración</h1>
+        <p class="subtitle">Gestiona las habitaciones y reservas de tu hotel</p>
+    </div>
+
+    <mat-tab-group class="admin-tabs">
+        <!-- TAB DE HABITACIONES -->
         <mat-tab label="Habitaciones">
             <div class="tab-content">
-                <div class="rooms-grid">
-                    @for (room of rooms; track room.id) {
-                    <mat-card>
-                        <mat-card-header><mat-card-title>{{ room.name }}</mat-card-title></mat-card-header>
-                        <mat-card-content>
-                            <p>Precio: ${{ room.price }}</p>
-                            <p>Capacidad: {{ room.capacity }}</p>
-                            <p>Estado: {{ room.is_available ? 'Disponible' : 'No disponible' }}</p>
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button mat-button color="warn" (click)="deleteRoom(room.id!)">Eliminar</button>
-                        </mat-card-actions>
-                    </mat-card>
+                <div class="tab-header">
+                    <h2>Gestión de Habitaciones</h2>
+                    <button mat-raised-button color="primary" (click)="openCreateDialog()" class="create-button">
+                        <mat-icon>add</mat-icon>
+                        Nueva Habitación
+                    </button>
+                </div>
+
+                <div class="rooms-table-container">
+                    <table mat-table [dataSource]="rooms" class="rooms-table">
+
+                        <!-- Columna Nombre -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                            <td mat-cell *matCellDef="let room">
+                                <div class="room-name">
+                                    <strong>{{ room.name }}</strong>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna Tipo -->
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                            <td mat-cell *matCellDef="let room">
+                                <span class="room-type-badge">{{ room.type }}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna Precio -->
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>Precio/Noche</th>
+                            <td mat-cell *matCellDef="let room">
+                                <strong class="price">${{ room.price }}</strong>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna Capacidad -->
+                        <ng-container matColumnDef="capacity">
+                            <th mat-header-cell *matHeaderCellDef>Capacidad</th>
+                            <td mat-cell *matCellDef="let room">
+                                <div class="capacity">
+                                    <mat-icon>people</mat-icon>
+                                    {{ room.capacity }} personas
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna Disponibilidad -->
+                        <ng-container matColumnDef="available">
+                            <th mat-header-cell *matHeaderCellDef>Estado</th>
+                            <td mat-cell *matCellDef="let room">
+                                <span [class]="room.is_available ? 'status-available' : 'status-unavailable'">
+                                    {{ room.is_available ? '✓ Disponible' : '✗ No disponible' }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Columna Acciones -->
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                            <td mat-cell *matCellDef="let room">
+                                <div class="action-buttons">
+                                    <button mat-icon-button color="primary" (click)="openEditDialog(room)"
+                                        matTooltip="Editar habitación">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" (click)="deleteRoom(room.id!)"
+                                        matTooltip="Eliminar habitación">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    @if (rooms.length === 0) {
+                    <div class="empty-state">
+                        <mat-icon>hotel_class</mat-icon>
+                        <h3>No hay habitaciones registradas</h3>
+                        <p>Comienza agregando tu primera habitación</p>
+                        <button mat-raised-button color="primary" (click)="openCreateDialog()">
+                            <mat-icon>add</mat-icon>
+                            Crear Habitación
+                        </button>
+                    </div>
                     }
                 </div>
             </div>
         </mat-tab>
+
+        <!-- TAB DE RESERVAS -->
         <mat-tab label="Reservas">
             <div class="tab-content">
+                <h2>Gestión de Reservas</h2>
                 <div class="reservations-grid">
                     @for (reservation of reservations; track reservation.id) {
-                    <mat-card>
-                        <mat-card-header><mat-card-title>Reserva #{{ reservation.id
-                                }}</mat-card-title></mat-card-header>
+                    <mat-card class="reservation-card">
+                        <mat-card-header>
+                            <mat-card-title>Reserva #{{ reservation.id }}</mat-card-title>
+                        </mat-card-header>
                         <mat-card-content>
-                            <p>Usuario: {{ reservation.user?.name }}</p>
-                            <p>Habitación: {{ reservation.room?.name }}</p>
-                            <p>Check-in: {{ reservation.check_in }}</p>
-                            <p>Check-out: {{ reservation.check_out }}</p>
-                            <p>Total: ${{ reservation.total_price }}</p>
-                            <p>Estado: {{ reservation.status }}</p>
+                            <div class="reservation-detail">
+                                <mat-icon>person</mat-icon>
+                                <span>{{ reservation.user?.name }}</span>
+                            </div>
+                            <div class="reservation-detail">
+                                <mat-icon>hotel</mat-icon>
+                                <span>{{ reservation.room?.name }}</span>
+                            </div>
+                            <div class="reservation-detail">
+                                <mat-icon>calendar_today</mat-icon>
+                                <span>{{ reservation.check_in }} - {{ reservation.check_out }}</span>
+                            </div>
+                            <div class="reservation-detail">
+                                <mat-icon>attach_money</mat-icon>
+                                <span>${{ reservation.total_price }}</span>
+                            </div>
+                            <div class="status-badge" [class.confirmed]="reservation.status === 'confirmed'">
+                                {{ reservation.status }}
+                            </div>
                         </mat-card-content>
                     </mat-card>
+                    }
+                    @if (reservations.length === 0) {
+                    <div class="empty-state">
+                        <mat-icon>event_busy</mat-icon>
+                        <h3>No hay reservas</h3>
+                        <p>Las reservas aparecerán aquí</p>
+                    </div>
                     }
                 </div>
             </div>
