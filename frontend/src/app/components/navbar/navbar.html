@@ -1,0 +1,52 @@
+<mat-toolbar color="primary" class="navbar">
+    <div class="toolbar">
+        <div class="logo" routerLink="/">
+            <mat-icon>hotel</mat-icon>
+            <span class="logo-text">Grand Hotel</span>
+        </div>
+        <nav class="nav-links">
+            <!-- Siempre visible -->
+            <button mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                Inicio
+            </button>
+            <button mat-button routerLink="/rooms" routerLinkActive="active">
+                Habitaciones
+            </button>
+
+            <!-- Solo para usuarios autenticados -->
+            @if (authService.isLoggedIn()) {
+            <button mat-button routerLink="/reservations" routerLinkActive="active">
+                Mis Reservas
+            </button>
+
+            <!-- Solo para administradores -->
+            @if (authService.isAdmin()) {
+            <button mat-button routerLink="/admin" routerLinkActive="active" class="admin-button">
+                Panel Admin
+            </button>
+            }
+
+            <!-- Menú de usuario -->
+            <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ authService.getCurrentUser()?.name }}</span>
+            </button>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </mat-menu>
+            } @else {
+            <!-- Botones para usuarios no autenticados -->
+            <button mat-button routerLink="/login" routerLinkActive="active">
+                Iniciar Sesión
+            </button>
+            <button mat-raised-button color="accent" routerLink="/register" routerLinkActive="active"
+                class="register-button">
+                Registrarse
+            </button>
+            }
+        </nav>
+    </div>
+</mat-toolbar>

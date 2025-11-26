@@ -1,0 +1,44 @@
+<div class="admin-container">
+    <h1>Panel de Administración</h1>
+    <mat-tab-group>
+        <mat-tab label="Habitaciones">
+            <div class="tab-content">
+                <div class="rooms-grid">
+                    @for (room of rooms; track room.id) {
+                    <mat-card>
+                        <mat-card-header><mat-card-title>{{ room.name }}</mat-card-title></mat-card-header>
+                        <mat-card-content>
+                            <p>Precio: ${{ room.price }}</p>
+                            <p>Capacidad: {{ room.capacity }}</p>
+                            <p>Estado: {{ room.is_available ? 'Disponible' : 'No disponible' }}</p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button color="warn" (click)="deleteRoom(room.id!)">Eliminar</button>
+                        </mat-card-actions>
+                    </mat-card>
+                    }
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Reservas">
+            <div class="tab-content">
+                <div class="reservations-grid">
+                    @for (reservation of reservations; track reservation.id) {
+                    <mat-card>
+                        <mat-card-header><mat-card-title>Reserva #{{ reservation.id
+                                }}</mat-card-title></mat-card-header>
+                        <mat-card-content>
+                            <p>Usuario: {{ reservation.user?.name }}</p>
+                            <p>Habitación: {{ reservation.room?.name }}</p>
+                            <p>Check-in: {{ reservation.check_in }}</p>
+                            <p>Check-out: {{ reservation.check_out }}</p>
+                            <p>Total: ${{ reservation.total_price }}</p>
+                            <p>Estado: {{ reservation.status }}</p>
+                        </mat-card-content>
+                    </mat-card>
+                    }
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

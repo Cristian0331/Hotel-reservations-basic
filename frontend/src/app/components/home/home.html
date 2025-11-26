@@ -1,0 +1,31 @@
+<div class="home-container">
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Bienvenido a Grand Hotel</h1>
+            <p class="hero-subtitle">Experimenta el lujo y la elegancia en cada detalle</p>
+            <div class="hero-buttons">
+                <button mat-raised-button routerLink="/rooms">
+                    <mat-icon>search</mat-icon>
+                    Explorar Habitaciones
+                </button>
+                <button mat-stroked-button routerLink="/register">
+                    <mat-icon>person_add</mat-icon>
+                    Registrarse
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <h2 class="services-title">Nuestros Servicios</h2>
+        <div class="services-grid">
+            @for (feature of features; track feature.title) {
+            <div class="service-card">
+                <mat-icon class="service-icon">{{ feature.icon }}</mat-icon>
+                <h3 class="service-title">{{ feature.title }}</h3>
+                <p class="service-description">{{ feature.description }}</p>
+            </div>
+            }
+        </div>
+    </section>
+</div>

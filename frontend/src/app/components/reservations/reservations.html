@@ -1,0 +1,43 @@
+<div class="reservations-container">
+    <h1>Mis Reservas</h1>
+
+    @if (selectedRoom) {
+    <mat-card class="reservation-form-card">
+        <mat-card-header><mat-card-title>Nueva Reserva - {{ selectedRoom.name }}</mat-card-title></mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Fecha de Entrada</mat-label>
+                    <input matInput [matDatepicker]="pickerIn" formControlName="check_in">
+                    <mat-datepicker-toggle matSuffix [for]="pickerIn"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerIn></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Fecha de Salida</mat-label>
+                    <input matInput [matDatepicker]="pickerOut" formControlName="check_out">
+                    <mat-datepicker-toggle matSuffix [for]="pickerOut"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerOut></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="!reservationForm.valid || loading">Confirmar Reserva</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    }
+
+    <div class="reservations-list">
+        @for (reservation of reservations; track reservation.id) {
+        <mat-card class="reservation-card">
+            <mat-card-header>
+                <mat-card-title>{{ reservation.room?.name || 'Habitación' }}</mat-card-title>
+                <mat-card-subtitle>Estado: {{ reservation.status }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p><strong>Check-in:</strong> {{ reservation.check_in }}</p>
+                <p><strong>Check-out:</strong> {{ reservation.check_out }}</p>
+                <p><strong>Total:</strong> ${{ reservation.total_price }}</p>
+            </mat-card-content>
+        </mat-card>
+        }
+    </div>
+</div>

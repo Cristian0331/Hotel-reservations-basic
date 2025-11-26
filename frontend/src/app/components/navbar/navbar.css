@@ -1,0 +1,150 @@
+.navbar {
+  background: var(--color-bg-secondary);
+  border-bottom: var(--border-width) solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 70px;
+}
+
+.toolbar {
+  padding: 0 var(--spacing-2xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logo mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-accent);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.nav-links button {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  height: 42px;
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nav-links button:hover {
+  color: var(--color-text-primary);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.nav-links button.active,
+.nav-links button[ng-reflect-router-link-active="active"] {
+  color: var(--color-accent);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Botón de registrarse */
+.register-button {
+  background: var(--color-accent) !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+.register-button:hover {
+  background: var(--color-accent-hover) !important;
+  color: white !important;
+  transform: translateY(-1px);
+}
+
+/* Botón admin */
+.admin-button {
+  background: var(--color-warning) !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+.admin-button:hover {
+  background: #d97706 !important;
+  color: white !important;
+}
+
+/* Botón de usuario */
+.user-button {
+  background: var(--color-bg-card) !important;
+  color: var(--color-text-primary) !important;
+  border: var(--border-width) solid var(--color-border) !important;
+}
+
+.user-button:hover {
+  border-color: var(--color-accent) !important;
+}
+
+.user-button mat-icon {
+  margin-right: var(--spacing-sm);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .toolbar {
+    padding: 0 var(--spacing-lg);
+  }
+
+  .nav-links {
+    gap: var(--spacing-xs);
+  }
+
+  .nav-links button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: var(--spacing-md);
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    margin-top: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+  }
+}

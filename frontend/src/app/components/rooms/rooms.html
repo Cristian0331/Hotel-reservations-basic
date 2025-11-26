@@ -1,0 +1,59 @@
+<div class="rooms-container">
+    <div class="rooms-header">
+        <h1>Nuestras Habitaciones</h1>
+        <p>Descubre nuestras elegantes habitaciones diseñadas para tu comodidad y descanso</p>
+    </div>
+
+    @if (loading) {
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+        <p>Cargando habitaciones...</p>
+    </div>
+    } @else if (rooms.length === 0) {
+    <div class="empty-state">
+        <h2>No hay habitaciones disponibles</h2>
+        <p>Lo sentimos, no hay habitaciones disponibles en este momento</p>
+        <button mat-raised-button routerLink="/">Volver al inicio</button>
+    </div>
+    } @else {
+    <div class="rooms-grid">
+        @for (room of rooms; track room.id) {
+        <div class="room-card">
+            <img [src]="room.image_url || 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'"
+                [alt]="room.name" class="room-image" />
+            <div class="room-content">
+                <h3>{{ room.name }}</h3>
+                <span class="room-type">{{ room.type }}</span>
+                <p>{{ room.description || 'Habitación elegante y confortable con todas las comodidades' }}</p>
+
+                <div class="room-details">
+                    <div class="room-detail">
+                        <mat-icon>people</mat-icon>
+                        <span>{{ room.capacity }} personas</span>
+                    </div>
+                    <div class="room-detail">
+                        <mat-icon>bed</mat-icon>
+                        <span>{{ room.type }}</span>
+                    </div>
+                </div>
+
+                <div class="room-price">
+                    ${{ room.price }}
+                    <small>/noche</small>
+                </div>
+
+                <div class="room-actions">
+                    <button mat-raised-button class="reserve-button" (click)="reserveRoom(room)"
+                        [disabled]="!room.is_available">
+                        {{ room.is_available ? 'Reservar Ahora' : 'No Disponible' }}
+                    </button>
+                    <button mat-button class="details-button">
+                        Ver Detalles
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
